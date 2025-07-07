@@ -1,64 +1,57 @@
+import{useState} from "react"
+
+
 const CalendarApp = () => {
+    const daysOfWeek=['Sun',"Mon","Tue","Wed","Thu","Fri","Sat"]
+    const monthsOfYear = ["January","February","Martch","April","May","June","July","August","September","October","November","December"]
+    
+    
+    const currentDate = new Date()
+    console.log(currentDate)
+    const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
+    const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
+    
+    const daysInMonth = new Date(currentYear,currentMonth+1,0).getDate()
+
+    const firstDayOfMonth = new Date(currentYear,currentMonth,1).getDay()
+
+    const prevMonth=()=>{
+        setCurrentMonth((prevMonth)=>(prevMonth===0?11:prevMonth-1))
+        setCurrentYear(prevYear=> currentMonth===0?prevYear-1:prevYear)
+    }
+
+    const nextMonth=()=>{
+        setCurrentMonth((nextMonth)=>(nextMonth===11?0:nextMonth+1))
+        setCurrentYear(nextYear=> currentMonth===11?nextYear+1:nextYear)
+    }
+
   return (
     <div className="calendar-app">
         <div className="calendar">
             <h1 className="heading">Calendar</h1>
             <div className="navigate-date">
-                <h2 className="month">July,</h2>
-                <h2 className="year">2025</h2>
+                <h2 className="month">{monthsOfYear[currentMonth]}</h2>
+                <h2 className="year">{currentYear}</h2>
                 <div className="buttons">
-                    <i className="bx bx-chevron-left">
+                    <i className="bx bx-chevron-left" onClick={prevMonth}>
                     <svg  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={"currentColor"} viewBox="0 0 24 24">{/* Boxicons v3.0 https://boxicons.com | License  https://docs.boxicons.com/free */}<path d="M14.29 6.29 8.59 12l5.7 5.71 1.42-1.42-4.3-4.29 4.3-4.29z"></path></svg>
                     </i>
-                    <i className="bx bx-chevron-right">
+                    <i className="bx bx-chevron-right" onClick={nextMonth}>
                     <svg  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={"currentColor"} viewBox="0 0 24 24">{/* Boxicons v3.0 https://boxicons.com | License  https://docs.boxicons.com/free */}<path d="m9.71 17.71 5.7-5.71-5.7-5.71-1.42 1.42 4.3 4.29-4.3 4.29z"></path></svg>
                     </i>
                 </div>
             </div>
             <div className="weekdays">
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
+                {daysOfWeek.map((day)=><span key={day}> {day}</span>)}
             </div>
             <div className="days">
-                <span>1</span>
-                <span className="current-day">2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-                <span>11</span>
-                <span>12</span>
-                <span>13</span>
-                <span>14</span>
-                <span>15</span>
-                <span>16</span>
-                <span>17</span>
-                <span>18</span>
-                <span>19</span>
-                <span>20</span>
-                <span>21</span>
-                <span>22</span>
-                <span>23</span>
-                <span>24</span>
-                <span>25</span>
-                <span>26</span>
-                <span>27</span>
-                <span>28</span>
-                <span>29</span>
-                <span>30</span>
-                <span>31</span>
+                {[...Array(firstDayOfMonth).keys()].map((_,index)=> (
+                <span key={`empty-${index}`}/>))}
 
 
-
+            {[...Array(daysInMonth).keys()].map((day)=>
+            <span key={day+1}>{day+1}</span>)}
+            
             </div>
         </div>
         <div className="events">

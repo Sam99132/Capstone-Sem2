@@ -9,7 +9,6 @@
     display: flex;
     column-gap: 5rem;
     position: relative;
-    transform-style: preserve-3d;
 }
 
 
@@ -92,7 +91,6 @@
     align-items: center;
     color: #ddd;
     cursor: pointer;
-    /* text-shadow: 0.5rem 1rem rgba(0,0,0,0.2); */
 }
 
 .current-day{
@@ -110,18 +108,19 @@
 
 .event-popup{
     position: absolute;
-    top: 38%;
+    top: 35%;
     left: 3rem;
     background-color: #161b22;
-    width: clamp(25rem,21cqi,40rem);
-    aspect-ratio: 10/9;
+    width: clamp(31rem,21cqi,40rem);
+    aspect-ratio: 10 / 9;
     border-radius: 1rem;
     box-shadow: 0 1rem 3rem rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
-    justify-content: cneter;
+    justify-content: center;
     align-items: center ;
     row-gap: 2rem;
+    display: none;
 
 }
 
@@ -139,8 +138,76 @@
     font-size: clamp(1.5rem,1.5cqi,2.2rem);
     display: flex;
     justify-content: center;
-    box-shadow: 0 0 1.5rem rgba(0,163,255,0.2);
+    box-shadow: 0 0 1.5rem 1rem rgba(0,163,255,0.2);
+    letter-spacing: 0.1rem;
+    justify-content: center;
+    align-items: center;
 
+}
+
+
+.time-input input{
+    background-color: transparent;
+    border: none;
+    border-top: .2rem solid #00a3ff;
+    border-bottom: .2rem solid #00a3ff;
+    width: clamp(4rem,4cqi,7rem);
+    height: 4rem;
+    text-align: center;
+    font-size: clamp(1.2rem,1.2cqi,1.6rem);
+    color: white;
+}
+
+
+.time-input input[type="number"]::-webkit-outer-spin-button,
+.time-input input[type="number"]::-webkit-inner-spin-button{
+    appearance: none;
+}
+
+
+.event-popup textarea{
+    width: clamp(15rem,15cqi,25rem);
+    aspect-ratio: 5/2;
+    resize: none;
+    background-color: #0f1319;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    color: #78879e;
+
+
+}
+
+
+.event-popup-btn{
+    width: clamp(15rem,15cqi,25rem);
+    height: 4rem;
+    background-color: #ef9011;
+    color: white;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(1.5rem,1.5cqi,2.2rem);
+    letter-spacing: .1rem;
+    border: none;
+    box-shadow: 0 0 1.5rem rgba(239,144,17,0.2);
+    cursor: pointer;
+}
+
+.event-popup-btn:active{
+    transform: translateY(.1rem);
+}
+
+.close-event-popup{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: transparent;
+    border: none;
+    cursor:pointer;
+}
+
+.close-event-popup i{
+    font-size: 2.5rem;
+    color: white;
 }
 
 .event{
@@ -161,7 +228,9 @@
     align-items: center;
     width: 25%;
     border-right: .1rem solid rgba(255,255,255,0.5);
+    letter-spacing: 0.1rem;
 }
+
 
 .event-date{
     font-size: clamp(1rem,1cqi,1.2rem);
@@ -169,12 +238,14 @@
 
 }
 
+
 .event-time{
     font-size: clamp(1.3rem,1cqi,1.6rem);
     line-height: 4rem;
     font-weight:bold ;
     color: white;
 }
+
 
 .event-text{
     font-size: clamp(1.2rem,1cqi,1.4rem);
@@ -185,6 +256,7 @@
     overflow-wrap: break-word;
 
 }
+
 
 .event-buttons{
     position: absolute;
@@ -197,8 +269,18 @@
 
 }
 
+
 .event-buttons i{
     font-size: 1.6rem;
     color: white;
     cursor: pointer;
 }
+
+
+
+
+
+
+
+
+
