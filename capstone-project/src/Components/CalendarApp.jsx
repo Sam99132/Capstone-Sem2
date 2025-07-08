@@ -10,19 +10,61 @@ const CalendarApp = () => {
     console.log(currentDate)
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
+    const [selectedDate,setSelectedDate] = useState(currentDate)
+    const [showEventPopup,setShowEventPopup] = useState(false)
+    const [events,setEvents] = useState([])
+    const [eventTime,setEventTime] = useState({hours:'00',minutes:'00'})
+    const [eventText,setEventText] = useState('')
     
     const daysInMonth = new Date(currentYear,currentMonth+1,0).getDate()
 
     const firstDayOfMonth = new Date(currentYear,currentMonth,1).getDay()
 
     const prevMonth=()=>{
-        setCurrentMonth((prevMonth)=>(prevMonth===0?11:prevMonth-1))
+        setCurrentMonth((prevMonth)=>(currentMonth===0?11:prevMonth-1))
         setCurrentYear(prevYear=> currentMonth===0?prevYear-1:prevYear)
     }
 
     const nextMonth=()=>{
-        setCurrentMonth((nextMonth)=>(nextMonth===11?0:nextMonth+1))
+        setCurrentMonth((nextMonth)=>(currentMonth===11?0:nextMonth+1))
         setCurrentYear(nextYear=> currentMonth===11?nextYear+1:nextYear)
+    }
+
+    const handleDayClick=(day)=>{
+        const clickedDate = new Date(currentYear,currentMonth,day)
+        const today = new Date()
+        
+        if (clickedDate >= today || isSameDay(clickedDate,today)){
+            setSelectedDate(clickedDate)
+            setShowEventPopup(true)
+            setEventText("")
+            setEventTime({hours:'00',minutes:'00'})
+        }
+    }
+
+    const isSameDay=(date1,date2)=>{
+        return(
+            date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth()&&
+            date1.getDate() == date2.getDate()
+        )
+    }
+
+    const handleEventSubmit = ()=>{
+        const newEvent = {
+            date: selectedDate,
+            time: `${eventTime.hours.padStart(2,'0')}:${eventTime.minutes.padStart(2,'0')}`,
+            text: eventText
+        }
+        setEvents([...events,newEvent])
+        setEventTime({hours:'00',minutes:'00'})
+        setEventText("")
+        setShowEventPopup(false)
+
+    }   
+
+    const CloseEventPopup=()=>{
+        setShowEventPopup(false)
     }
 
   return (
@@ -50,25 +92,25 @@ const CalendarApp = () => {
 
 
             {[...Array(daysInMonth).keys()].map((day)=>
-            <span key={day+1}>{day+1}</span>)}
+            <span key={day+1} className={day+1===currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear===currentDate.getFullYear()?"current-day":""} onClick={()=> handleDayClick(day+1)}>{day+1}</span>)}
             
             </div>
         </div>
         <div className="events">
-            <div className="event-popup">
+            {showEventPopup &&(<div className="event-popup">
                 <div className="time-input">
                     <div className="event-popup-time">Time</div>
-                    <input type="number" name="hours" min={0} max={24} className="hours"/>
+                    <input type="number" name="hours" min={0} max={24} className="hours" value ={eventTime.hours} onChange={(e)=>{setEventTime({...eventTime,hours:e.target.value})}}/>
                     <input type="number" name="minutes" min={0} max={60} className="minutes"/>
 
 
                 </div>
                 <textarea placeholder="Enter Event Text (Maximum 60 Characters) "></textarea>
                 <button className="event-popup-btn">Add Event</button>
-                <button className="close-event-popup">
+                <button className="close-event-popup" onClick={CloseEventPopup}>
                     <i className="bx bx-x"><svg  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={"currentColor"} viewBox="0 0 24 24">{/* Boxicons v3.0 https://boxicons.com | License  https://docs.boxicons.com/free */}<path d="m7.76 14.83-2.83 2.83 1.41 1.41 2.83-2.83 2.12-2.12.71-.71.71.71 1.41 1.42 3.54 3.53 1.41-1.41-3.53-3.54-1.42-1.41-.71-.71 5.66-5.66-1.41-1.41L12 10.59 6.34 4.93 4.93 6.34 10.59 12l-.71.71z"></path></svg></i>
                 </button>
-            </div>
+            </div>)}
             <div className="event">
                 <div className="event-date-wrapper">
                     <div className="event-date">July 1 2025</div>
