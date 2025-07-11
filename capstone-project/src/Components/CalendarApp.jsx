@@ -7,7 +7,6 @@ const CalendarApp = () => {
     
     
     const currentDate = new Date()
-    console.log(currentDate)
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
     const [selectedDate,setSelectedDate] = useState(currentDate)
@@ -21,12 +20,12 @@ const CalendarApp = () => {
     const firstDayOfMonth = new Date(currentYear,currentMonth,1).getDay()
 
     const prevMonth=()=>{
-        setCurrentMonth((prevMonth)=>(currentMonth===0?11:currentMonth-1))
+        setCurrentMonth(()=>(currentMonth===0?11:currentMonth-1))
         setCurrentYear(prevYear=> currentMonth===0?prevYear-1:prevYear)
     }
 
     const nextMonth=()=>{
-        setCurrentMonth((nextMonth)=>(currentMonth===11?0:currentMonth+1))
+        setCurrentMonth(()=>(currentMonth===11?0:currentMonth+1))
         setCurrentYear(nextYear=> currentMonth===11?nextYear+1:nextYear)
     }
 
@@ -70,7 +69,7 @@ const CalendarApp = () => {
 
         updatedEvents.sort((a,b)=> new Date(a.date) - new Date(b.date))
 
-        setEvents([updatedEvents])
+        setEvents(updatedEvents)
         setEventTime({hours:'00',minutes:'00'})
         setEventText("")
         setShowEventPopup(false)
@@ -89,6 +88,12 @@ const CalendarApp = () => {
         setShowEventPopup(true)
 
     }
+
+    const handleDeleteEvent= (eventId)=>{
+        const updatedEvents = events.filter((event)=> event.id !== eventId )
+        setEvents(updatedEvents)
+    }
+
 
     const CloseEventPopup=()=>{
         setShowEventPopup(false)
@@ -170,7 +175,7 @@ const CalendarApp = () => {
                 <div className="event-text">{event.text}</div>
                 <div className="event-buttons">
                     <i className="bx bxs-edit-alt" onClick={()=> handleEditEvent(event)}><svg  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={"currentColor"} viewBox="0 0 24 24">{/* Boxicons v3.0 https://boxicons.com | License  https://docs.boxicons.com/free */}<path d="m17.71 7.29-3-3a.996.996 0 0 0-1.41 0l-11.01 11A1 1 0 0 0 2 16v3c0 .55.45 1 1 1h3c.27 0 .52-.11.71-.29l11-11a.996.996 0 0 0 0-1.41ZM5.59 18H4v-1.59l7.5-7.5 1.59 1.59zm8.91-8.91L12.91 7.5 14 6.41 15.59 8zM11 18h11v2H11z"></path></svg></i>
-                    <i className="bx bxs-message-alt-x"><svg  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={"currentColor"} viewBox="0 0 24 24">{/* Boxicons v3.0 https://boxicons.com | License  https://docs.boxicons.com/free */}<path d="m7.76 14.83-2.83 2.83 1.41 1.41 2.83-2.83 2.12-2.12.71-.71.71.71 1.41 1.42 3.54 3.53 1.41-1.41-3.53-3.54-1.42-1.41-.71-.71 5.66-5.66-1.41-1.41L12 10.59 6.34 4.93 4.93 6.34 10.59 12l-.71.71z"></path></svg></i>
+                    <i className="bx bxs-message-alt-x" onClick={()=>( handleDeleteEvent(event.id))} ><svg  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={"currentColor"} viewBox="0 0 24 24">{/* Boxicons v3.0 https://boxicons.com | License  https://docs.boxicons.com/free */}<path d="m7.76 14.83-2.83 2.83 1.41 1.41 2.83-2.83 2.12-2.12.71-.71.71.71 1.41 1.42 3.54 3.53 1.41-1.41-3.53-3.54-1.42-1.41-.71-.71 5.66-5.66-1.41-1.41L12 10.59 6.34 4.93 4.93 6.34 10.59 12l-.71.71z"></path></svg></i>
 
                 </div>
             </div>
